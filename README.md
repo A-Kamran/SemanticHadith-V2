@@ -6,7 +6,7 @@ The knowledge graph and ontology are hosted on [here]().
 Web server available [here](http:Semantichadith.com). 
 
 ## The Semantic Hadith Ontology
-Have a look at the [documentation](https://a-kamran.github.io/SemanticHadithV2/) .
+Have a look at the [documentation](https://a-kamran.github.io/SemanticHadith-V2/) .
 
 ## SPARQL Endpoint available at
 
