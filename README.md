@@ -23,7 +23,7 @@ http://semantichadith.com:8890/sparql/ (Faceted Browsing is also enabled)
 Default Dataset Name (Graph IRI): http://www.semantichadith.com/ontology/
 
 ## Contributors
-1. Amna Binte Kamran[https://scholar.google.com/citations?user=RJoQH-IAAAAJ&hl=en&oi=ao]
+1. [Amna Binte Kamran](https://scholar.google.com/citations?user=RJoQH-IAAAAJ&hl=en&oi=ao)
 2. Nigar Azhar Butt
 
 ## References
