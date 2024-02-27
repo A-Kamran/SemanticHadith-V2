@@ -22,6 +22,12 @@ http://semantichadith.com:8890/sparql/ (Faceted Browsing is also enabled)
 
 Default Dataset Name (Graph IRI): http://www.semantichadith.com/ontology/
 
+## Contributors
+1. Nigar Azhar Butt
+2. Amna Binte Kamran
+
+## References
+Kamran, A. B., Abro, B., & Basharat, A. (2023). SemanticHadith: An ontology-driven knowledge graph for the hadith corpus. Journal of Web Semantics, 78, 100797.
 
 
 
