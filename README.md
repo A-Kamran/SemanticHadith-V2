@@ -1,6 +1,6 @@
 # The Semantic Hadith Knowlege Graph - V2
 
-The knowledge graph and ontology are hosted on [here]().
+The [knowledge graph](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadithKGV2.ttl.zip) and [ontology](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadith2.0.owl) are hosted here.
 
 
 Web server available [here](http:Semantichadith.com). 
