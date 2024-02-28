@@ -27,10 +27,11 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 SELECT ?similarHadith
 WHERE {
-  ?similarHadith :isSimilar ?hadithX .
-#  FILTER (?hadithX = :HadithX)
+  ?similarHadith :isSimilar :SB-HD0001 .
 }
 ```
 ### Competency Question 4:
@@ -38,9 +39,13 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
 SELECT (COUNT(?hadith) AS ?count)
 WHERE {
-  ?hadith :isPartOfCollection :HadithCollectionY .
+  ?hadith a :Hadith.
+  ?hadith :isPartOfChapter ?chap.
+  ?chap :isPartOfBook ?book.
+  ?book :isPartOfCollection :SB01 .
 }
 ```
 ### Competency Question 5:
@@ -48,10 +53,11 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
 SELECT DISTINCT ?type
 WHERE {
-  ?hadith a ?type .
-  FILTER (?type = :Elevated_Hadith || ?type = :Sacred_Hadith || ?type = :Severed_Hadith || ?type = :Stopped_Hadith)
+  ?hadith :hasHadithType ?type .
+ 
 }
 ```
 ### Competency Question 6:
@@ -59,9 +65,10 @@ WHERE {
 
 **SPARQL Query:**
 ```
-SELECT ?hadith
+PREFIX : <http://www.semantichadith.com/ontology/>
+SELECT ?hadith 
 WHERE {
-  ?hadith :containMentionOf :Event_X .
+  ?hadith :containsMentionOf :EidAdha.
 }
 ```
 ### Competency Question 7:
@@ -69,19 +76,22 @@ WHERE {
 
 **SPARQL Query:**
 ```
-SELECT ?hadith
+PREFIX : <http://www.semantichadith.com/ontology/>
+SELECT ?hadith ?hadithText
 WHERE {
-  ?hadith :discussesTopic :Topic_X .
+  ?hadith :discussesTopic :DayOfResurrection .
+   ?hadith :fullHadithText  ?hadithText.
 }
 ```
 ### Competency Question 8:
-**Question:** How many Hadith 'containMentionOf' Location X?
+**Question:** How many Hadith 'containsMentionOf' Location X?
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
 SELECT (COUNT(?hadith) AS ?count)
 WHERE {
-  ?hadith :containMentionOf :Location_X .
+  ?hadith :containsMentionOf :Madina .
 }
 ```
 ### Competency Question 9:
@@ -89,9 +99,19 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
 ASK
 WHERE {
-  :Hadith_X :containsMentionOf :Person_Y .
+  :SB-HD2324 :containsMentionOf :AbuBakr .
+
+}
+```
+```
+PREFIX : <http://www.semantichadith.com/ontology/>
+Select  ?hadith ?hadithText
+WHERE {
+?hadith :containsMentionOf :AbuBakr .
+   ?hadith :fullHadithText  ?hadithText.
 }
 ```
 ### Competency Question 10:
@@ -101,7 +121,15 @@ WHERE {
 ```
 ASK
 WHERE {
-  ?hadith :containsMentionOf :Prophet_A .
+  ?hadith :containsMentionOf :Musa .
+}
+```
+```
+PREFIX : <http://www.semantichadith.com/ontology/>
+Select  ?hadith ?hadithText
+WHERE {
+?hadith :containsMentionOf :Musa .
+   ?hadith :fullHadithText  ?hadithText.
 }
 ```
 ### Competency Question 11:
@@ -109,21 +137,26 @@ WHERE {
 
 **SPARQL Query:**
 ```
-SELECT DISTINCT ?individual
+PREFIX : <http://www.semantichadith.com/ontology/>
+SELECT DISTINCT ?hadith ?hadithText ?individual
 WHERE {
-  ?hadith :mentions ?eventA .
-  ?individual :mentionedIn ?eventA .
+  ?hadith :containsMentionOf :EidAdha .
+  ?hadith :containsMentionOf ?individual .
+       ?hadith :fullHadithText  ?hadithText.
+
+	 ?individual a :HistoricPerson.
 }
 ```
 ### Competency Question 12:
-**Question:** Are there specific events 'mentionedIn' Hadith narrated by certain individuals?
+**Question:** Are there specific entities 'mentionedIn' Hadith narrated by certain individuals?
 
 **SPARQL Query:**
 ```
-SELECT DISTINCT ?event
+PREFIX : <http://www.semantichadith.com/ontology/>
+SELECT DISTINCT ?hadith  ?entity
 WHERE {
-  ?hadith :mentions ?event .
-  ?narrator :narrated ?hadith .
+  ?hadith :containsMentionOf ?entity .
+   ?hadith :hasNarratorChain/:hasRootNarratorSegment/:refersToNarrator :HN05913 .
 }
 ```
 ### Competency Question 13:
@@ -131,24 +164,29 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT ?narrator
 WHERE {
-  ?narrator rdf:type :Narrator .
+  ?narrator rdf:type :HadithNarrator .
   MINUS {
-    ?narrator :narrated ?hadith .
+        ?narrator ^(:hasNarratorChain/:hasNarratorSegment:refersToNarrator) ?hadith.
     ?hadith rdf:type/rdfs:subClassOf* :Sacred_Hadith .
   }
 }
 ```
 ### Competency Question 14:
-**Question:** How many Companions are mentioned in Hadith X?
+**Question:** How many entities are mentioned in Hadith X?
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (COUNT(DISTINCT ?companion) AS ?count)
-WHERE {
-  ?hadith rdf:type :Hadith ;
-         :mentions ?companion .
+WHERE { 
+    :SB-HD4877   :containsMentionOf ?companion .
   ?companion rdf:type/rdfs:subClassOf* :Companion .
 }
 ```
@@ -157,9 +195,10 @@ WHERE {
 
 **SPARQL Query:**
 ```
+PREFIX : <http://www.semantichadith.com/ontology/>
 SELECT DISTINCT ?hadithType
 WHERE {
-  :Hadith_X :hasHadithType ?hadithType .
+  :SB-HD4877 :hasHadithType ?hadithType .
 }
 ```
 ### Competency Question 16:
@@ -167,17 +206,20 @@ WHERE {
 
 **SPARQL Query:**
 ```
+ PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
 SELECT ?hadith ?numNarrators
 WHERE {
   ?hadith :hasNarratorChain ?chain .
   {
     SELECT ?hadith (COUNT(?narrator) AS ?numNarrators)
     WHERE {
-      ?chain :hasNarrator ?narrator .
+      ?hadith :hasNarratorChain/:hasNarratorSegment/:refersToNarrator ?narrator .
     }
     GROUP BY ?hadith
   }
-  FILTER (?numNarrators > x)
+  FILTER (?numNarrators > 3)
 }
 ```
 ### Competency Question 17:
@@ -185,26 +227,31 @@ WHERE {
 
 **SPARQL Query:**
 ```
+ PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
 SELECT ?topic (COUNT(?hadith) AS ?numHadiths)
 WHERE {
   ?hadith :discussesTopic ?topic .
-  ?hadith :hasNarratorChain ?chain .
-  ?chain :hasNarrator :Narrator_A .
+  ?hadith :hasNarratorChain/:hasNarratorSegment/:refersToNarrator :HN04903 .
 }
 GROUP BY ?topic
 ORDER BY DESC(?numHadiths)
 LIMIT 1
 ```
 ### Competency Question 18:
-**Question:** Which events are mentioned by at least three Hadith narrations?
+**Question:** Which topics are discussed by at least three Hadith narrations?
 
 **SPARQL Query:**
 ```
-SELECT DISTINCT ?event
+ PREFIX : <http://www.semantichadith.com/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?topic
 WHERE {
-  ?hadith :containMentionOf ?event .
+  ?hadith :discussesTopic ?topic .
 }
-GROUP BY ?event
+GROUP BY ?topic
 HAVING (COUNT(?hadith) >= 3)
 ```
 
