@@ -120,42 +120,92 @@ WHERE {
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?event
+WHERE {
+  ?hadith :mentions ?event .
+  ?narrator :narrated ?hadith .
+}
 ```
 ### Competency Question 13:
 **Question:** Which narrators have not narrated any sacred Hadith?
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?narrator
+WHERE {
+  ?narrator rdf:type :Narrator .
+  MINUS {
+    ?narrator :narrated ?hadith .
+    ?hadith rdf:type/rdfs:subClassOf* :Sacred_Hadith .
+  }
+}
 ```
 ### Competency Question 14:
 **Question:** How many Companions are mentioned in Hadith X?
 
 **SPARQL Query:**
 ```
+SELECT (COUNT(DISTINCT ?companion) AS ?count)
+WHERE {
+  ?hadith rdf:type :Hadith ;
+         :mentions ?companion .
+  ?companion rdf:type/rdfs:subClassOf* :Companion .
+}
 ```
 ### Competency Question 15:
 **Question:** What type of Hadith is Hadith X?
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?hadithType
+WHERE {
+  :Hadith_X :hasHadithType ?hadithType .
+}
 ```
 ### Competency Question 16:
 **Question:** Which Hadith narrations have more than x number of narrators?
 
 **SPARQL Query:**
 ```
+SELECT ?hadith ?numNarrators
+WHERE {
+  ?hadith :hasNarratorChain ?chain .
+  {
+    SELECT ?hadith (COUNT(?narrator) AS ?numNarrators)
+    WHERE {
+      ?chain :hasNarrator ?narrator .
+    }
+    GROUP BY ?hadith
+  }
+  FILTER (?numNarrators > x)
+}
 ```
 ### Competency Question 17:
 **Question:** What is the most narrated Topic by Narrator A?
 
 **SPARQL Query:**
 ```
+SELECT ?topic (COUNT(?hadith) AS ?numHadiths)
+WHERE {
+  ?hadith :discussesTopic ?topic .
+  ?hadith :hasNarratorChain ?chain .
+  ?chain :hasNarrator :Narrator_A .
+}
+GROUP BY ?topic
+ORDER BY DESC(?numHadiths)
+LIMIT 1
 ```
 ### Competency Question 18:
 **Question:** Which events are mentioned by at least three Hadith narrations?
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?event
+WHERE {
+  ?hadith :containMentionOf ?event .
+}
+GROUP BY ?event
+HAVING (COUNT(?hadith) >= 3)
 ```
 
 
