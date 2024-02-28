@@ -1,6 +1,6 @@
 # The Semantic Hadith Knowlege Graph - V2
 
-The knowledge graph and ontology are hosted on [here]().
+The [knowledge graph](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadithKGV2.ttl.zip) and [ontology](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadith2.0.owl) are hosted here.
 
 
 Web server available [here](http:Semantichadith.com). 
@@ -23,8 +23,8 @@ http://semantichadith.com:8890/sparql/ (Faceted Browsing is also enabled)
 Default Dataset Name (Graph IRI): http://www.semantichadith.com/ontology/
 
 ## Contributors
-1. Nigar Azhar Butt
-2. Amna Binte Kamran
+1. [Amna Binte Kamran](https://scholar.google.com/citations?user=RJoQH-IAAAAJ&hl=en&oi=ao)
+2. Nigar Azhar Butt
 
 ## References
 Kamran, A. B., Abro, B., & Basharat, A. (2023). SemanticHadith: An ontology-driven knowledge graph for the hadith corpus. Journal of Web Semantics, 78, 100797.
