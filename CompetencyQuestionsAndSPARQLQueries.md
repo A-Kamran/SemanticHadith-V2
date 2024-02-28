@@ -14,60 +14,106 @@ The given SPARQL are _examples_ that may be reinterpreted and reused for applica
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?hadith
+WHERE {
+  ?hadith rdf:type :Hadith .
+  FILTER NOT EXISTS {
+    ?hadith :discussesTopic ?topic .
+  }
+}
 ```
 ### Competency Question 3:
 **Question:** What Hadith is similar to Hadith X?
 
 **SPARQL Query:**
 ```
+SELECT ?similarHadith
+WHERE {
+  ?similarHadith :isSimilar ?hadithX .
+#  FILTER (?hadithX = :HadithX)
+}
 ```
 ### Competency Question 4:
 **Question:** How many hadith narrations are 'partOf' a Hadith Collection Y?
 
 **SPARQL Query:**
 ```
+SELECT (COUNT(?hadith) AS ?count)
+WHERE {
+  ?hadith :isPartOfCollection :HadithCollectionY .
+}
 ```
 ### Competency Question 5:
 **Question:** What are the types of Hadith?
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?type
+WHERE {
+  ?hadith a ?type .
+  FILTER (?type = :Elevated_Hadith || ?type = :Sacred_Hadith || ?type = :Severed_Hadith || ?type = :Stopped_Hadith)
+}
 ```
 ### Competency Question 6:
 **Question:** Which Hadith 'containMentionOf' Event X?
 
 **SPARQL Query:**
 ```
+SELECT ?hadith
+WHERE {
+  ?hadith :containMentionOf :Event_X .
+}
 ```
 ### Competency Question 7:
 **Question:** Find Hadith 'discussesTopic' Topic X.
 
 **SPARQL Query:**
 ```
+SELECT ?hadith
+WHERE {
+  ?hadith :discussesTopic :Topic_X .
+}
 ```
 ### Competency Question 8:
 **Question:** How many Hadith 'containMentionOf' Location X?
 
 **SPARQL Query:**
 ```
+SELECT (COUNT(?hadith) AS ?count)
+WHERE {
+  ?hadith :containMentionOf :Location_X .
+}
 ```
 ### Competency Question 9:
 **Question:** Does Hadith X 'containsMentionOf' Person Y?
 
 **SPARQL Query:**
 ```
+ASK
+WHERE {
+  :Hadith_X :containsMentionOf :Person_Y .
+}
 ```
 ### Competency Question 10:
 **Question:** Is there a hadith that 'containMentionOf' Prophet A?
 
 **SPARQL Query:**
 ```
+ASK
+WHERE {
+  ?hadith :containsMentionOf :Prophet_A .
+}
 ```
 ### Competency Question 11:
 **Question:** Which individuals are 'mentionedIn' Event A described in a Hadith?
 
 **SPARQL Query:**
 ```
+SELECT DISTINCT ?individual
+WHERE {
+  ?hadith :mentions ?eventA .
+  ?individual :mentionedIn ?eventA .
+}
 ```
 ### Competency Question 12:
 **Question:** Are there specific events 'mentionedIn' Hadith narrated by certain individuals?
@@ -314,7 +360,12 @@ where {
 
 
 ```
-
+SELECT ?chain (COUNT(?chain) AS ?chainCount)
+WHERE {
+  ?hadith :hasNarratorChain ?chain .
+}
+GROUP BY ?chain
+HAVING (COUNT(?chain) > x)
 ```
 
 **Question:**  Find the number of hadith where the chain has Narrator A and Narrator B but not Narrator C and matn includes TOPIC A.
