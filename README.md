@@ -3,7 +3,7 @@
 The [knowledge graph](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadithKGV2.ttl.zip) and [ontology](https://github.com/A-Kamran/SemanticHadith-V2/blob/main/SemanticHadith2.0.owl) are hosted here.
 
 
-Web server available [here](http:Semantichadith.com). 
+Web server available [here](http://www.semantichadith.com/). 
 
 ## The Semantic Hadith Ontology
 Have a look at the [documentation](https://a-kamran.github.io/SemanticHadith-V2/) .
